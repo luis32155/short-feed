@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            font-family: Roboto, "Helvetica Neue", sans-serif;
+        }
+
+        .bg-equifax {
+            background: #BED6F8;
+        }
+
+        .btn-equifax {
+            background: #BED6F8;
+            color: #000;
+        }
+
+        .btn-equifax:hover {
+            background: #95aed2;
+            color: #000;
+        }
+
+        .nav-link-hov:hover {
+            background: #b2c8e8;
+            border-radius: 15px 1px;
+            margin-top: 3px;
+        }
+    </style>
+</head>
+
+<body class="bg-light">
+    <div class="container my-5">
+        <div class="card card-body">
+            <h3 class="mb-0 text-dark">Ingreso de Solicitud</h3>
+            <hr class="shadow mt-2 mb-3" style="border: solid 1px #d4d4d4;">
+            <div class="row">
+                <input type="hidden" id="codigoEntidad" value="000001">
+                <div class="col-md-3">
+                    Desde:
+                    <input type="date" id="fechaInicial" class="form-control">
+                </div>
+                <div class="col-md-3">
+                    Hasta:
+                    <input type="date" id="fechaFinal" class="form-control">
+                </div>
+                <div class="col-md-3">
+                    Tipo Verificacion:
+                    <select class="form-control" id="tipoVer">
+                        <option value="Virtual">Virtual</option>
+                        <option value="Fisico">Fisico</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button class="btn btn-equifax" onclick="getChart()">Verificar</button>
+                <button class="btn btn-light">Limpiar</button>
+            </div>
+            <div class="py-4">
+                <div class="row">
+                    <div class="col-md-6">
+                        <table id="tableInfo" class="table">
+                            <thead>
+                                <tr>
+                                    <td>Mes</td>
+                                    <td id="tipoVerText">Virtual</td>
+                                    <td>Campo</td>
+                                    <td>Telefonicas</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-center" colspan="4">
+                                        <div class="alert alert-info">
+                                            Seleccione un rango de fechas
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <canvas id="myChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <div class="py-3 text-white" style="background: rgba(0,0,0,0.4); position: sticky; bottom: 0;">
+        <div class="container text-center">
+            <h5 class="font-weight-bold">EQUIFAX <sup>©</sup></h5>
+            <small class="m-0">Copyright © 2020 Todos los derechos reservados.</small>
+        </div>
+    </div> -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script>
+
+        function getChart() {
+
+            var ctx = document.getElementById('myChart').getContext('2d');
+            $("#tableInfo tbody").html('<tr><td class="text-center" colspan="4">cargando...</td></tr>');
+            $('#tableInfo #tipoVerText').html($('#tipoVer').val())
+
+            $.ajax({
+                url: 'https://jsonplaceholder.typicode.com/posts', //<- reemplazar por url verdadera
+                method: 'POST',
+                data: {
+                    'codigoEntidad': $('#codigoEntidad').val(),
+                    'fechaInicial': convertDate($('#fechaInicial').val()),
+                    'fechaFinal': convertDate($('#fechaFinal').val()),
+                    'tipoVer': $('#tipoVer').val()
+                }
+            })
+                .done(d => {
+
+                    var labels = [];
+                    var data = [];
+                    $("#tableInfo tbody").html('');
+                    //comentar todo esto
+                    d = [
+                        { periodo: "Ene-13", cantidadVirtual: '46' },
+                        { periodo: "Feb-13", cantidadVirtual: '678' },
+                        { periodo: "Mar-13", cantidadVirtual: '97' },
+                        { periodo: "Abr-13", cantidadVirtual: '197' },
+                        { periodo: "May-13", cantidadVirtual: '947' },
+                        { periodo: "Jun-13", cantidadVirtual: '907' },
+                    ];
+                    //comentar todo esto
+
+                    d.forEach(element => {
+
+                        let cad = `<tr>
+                            <td>${element.periodo}</td>
+                            <td>${element.cantidadVirtual}</td>
+                            <td>0</td>
+                            <td>0</td>
+                        </tr>`;
+
+                        $("#tableInfo tbody").append(cad);
+                        labels.push(element.periodo);
+                        data.push(element.cantidadVirtual);
+                    });
+
+                    var lineChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: $('#tipoVer').val(),
+                                data: data,
+                                lineTension: 0,
+                                fill: false,
+                                borderColor: 'orange',
+                                backgroundColor: 'orange',
+                                borderDash: [5, 5],
+                            }]
+                        },
+                    });
+                })
+                .fail(e => {
+                    console.log(e);
+                });
+        }
+
+        function convertDate(string) {
+            try {
+
+                return string.split('-').reverse().join('-') + ' 00:00:00';
+            } catch (error) {
+                return string;
+            }
+        }
+    </script>
+</body>
+
+</html>

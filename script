@@ -1,0 +1,31 @@
+var dataJson = [(${ data })]
+
+        function getChart() {
+
+            var ctx = document.getElementById('myChart').getContext('2d');
+
+            var labels = [];
+            var data = [];
+
+            dataJson.forEach(element => {
+                
+                labels.push(element.periodo);
+                data.push(element.cantidadVirtual);
+            });
+
+            var lineChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: $('#tipoVer').val(),
+                        data: data,
+                        lineTension: 0,
+                        fill: false,
+                        borderColor: 'orange',
+                        backgroundColor: 'orange',
+                        borderDash: [5, 5],
+                    }]
+                },
+            });
+        }

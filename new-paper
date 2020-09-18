@@ -1,33 +1,19 @@
-<link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
-    <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
-    <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.es.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-    <script>
-
-function SetFormatInitial(){
-            $('#fechaInicialHidden').val($('#fechaInicial').val()+' 00:00:00')
-        }
-
-        function SetFormatFinal(){
-            $('#fechaFinalHidden').val($('#fechaFinal').val()+' 00:00:00')
-        }
-
-        $('.datepicker').datepicker({
-            format: 'dd/mm/yyyy',
-            language: 'es',
-            autoclose: true
-        });
-
-<div class="col-md-3">
-                    Desde:
-                    <input id="fechaInicial" onChange="SetFormatInitial()" class="form-control datepicker">
-                    <input type="hidden" id="fechaInicialHidden" class="form-control datepicker">
-                </div>
-                <div class="col-md-3">
-                    Hasta:
-                    <input id="fechaFinal" onChange="SetFormatFinal()" class="form-control datepicker">
-                    <input type="hidden" id="fechaFinalHidden" class="form-control datepicker">
-                </div>
+document.getElementById('form-pedido').addEventListener('submit', function (e) {
+    var idprov = document.getElementById('provID').value;
+    var fechaVencimiento = document.getElementById('fecha-vencimiento').value;
+    var detalle = document.querySelector('#tb-detalle tbody').children;
+    if (idprov == '') {
+        e.preventDefault();
+        $('#alertCuerpo').html('<h6>Debe seleccionar un proveedor</h6>');
+        $('#alertModal').modal('toggle');
+    }else if (fechaVencimiento == '') {
+        e.preventDefault();
+        $('#alertCuerpo').html('<h6>Debes Insertar la Fecha de Vencimiento</h6>');
+        $('#alertModal').modal('toggle');
+    }
+    else if (detalle.length < 1) {
+        e.preventDefault();
+        $('#alertCuerpo').html('<h6>No es posible registrar un pedido sin productos agregados</h6>');
+        $('#alertModal').modal('toggle');
+    }
+});

@@ -1,42 +1,52 @@
-document.getElementById('form-pedido').addEventListener('submit', function (e) {
-    var idprov = document.getElementById('provID').value;
-    var fechaVencimiento = document.getElementById('fecha-vencimiento').value;
-    var detalle = document.querySelector('#tb-detalle tbody').children;
-    if (idprov == '') {
-        e.preventDefault();
-        $('#alertCuerpo').html('<h6>Debe seleccionar un proveedor</h6>');
-        $('#alertModal').modal('toggle');
-    }else if (fechaVencimiento == '') {
-        e.preventDefault();
-        $('#alertCuerpo').html('<h6>Debes Insertar la Fecha de Vencimiento</h6>');
-        $('#alertModal').modal('toggle');
-    }
-    else if (detalle.length < 1) {
-        e.preventDefault();
-        $('#alertCuerpo').html('<h6>No es posible registrar un pedido sin productos agregados</h6>');
-        $('#alertModal').modal('toggle');
-    }
-});
+Algoritmo Ingreso de Data
+Variables 
+Cadena txtApepat,txtApeMat,txtNombre,txtDir,txtTelefono,txtDni.
+Entero codigoUsu
+Inicio 
+Escribir("Ingrese Apellido Paterno")
+Leer txtApepat
+Inicio
+Si (txtApepat == una sola palabra)
+Fin
+  Sino 
+Inicio
+     Escribir ("Verifique el ingreso del Valor")
+Fin
+Escribir ("Ingrese Apellido Materno")
+Leer txtApeMat
+Inicio
+  Si (txtApeMat == una sola palabra)
+Fin
+  Sino
+Inicio
+     Escribir ("Verifique el ingreso del Valor")
+Fin
+Escribir ("Ingrese Nombre ")
+Leer txtNombre
+Inicio
+Si Longitud(200,txtNombre)
+Fin
+Sino
+Escribir("Ingrese Direccion")
+ Leer txtDir
+Escribir ("Ingrese Telefono")
+Leer txtTelefono
+ Si
+Inicio
+ Escribir  txtTelefono <- Concatenar(  txtTelefono, "-" )
+Fin
+Sino 
+  Escribir ("Verifique el ingreso del Valor")
+Escribir ("Ingrese Dni")
+Leer txtDni
+Si 
+ (txtDni<=8)
+Sino  
+  ("Verifique el ingreso del Valor")
+Fin 
+Escribiri ("Los datos se guardaron correctamente")
+Fin
 
 
 
-
-
-<div class="modal fade" id="alertModal" tabindex="-1" role="dialog" aria-labelledby="alertModal" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content bg-dark">
-      <div class="modal-header">
-        <h5 class="modal-title text-warning" id="exampleModalCenterTitle">Atenci�n</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-        <div class="modal-body" id="alertCuerpo">
-        
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-success" data-dismiss="modal">Cerrar</button>
-      </div>
-    </div>
-  </div>
-</div>
+ 

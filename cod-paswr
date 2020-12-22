@@ -49,3 +49,19 @@
 		Hospital.costotraslado = costotraslado;
 	}
 	
+	
+		
+  private Scanner teclado;
+  Hospital hospital = new Hospital();
+  
+  public static void  main(String [] arg) {
+	  
+  }
+  
+  
+  public void inicializar() {
+	  teclado = new Scanner(System.in);
+	  System.out.print("Ingrese el Codigo");
+	  hospital.getCodigo().equals(teclado.next());
+  }
+	
